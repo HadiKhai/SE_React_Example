@@ -4,9 +4,9 @@ import Footer from "../../components/Footer";
 
 const Main = ({children}) => {
     return (
-        <div>
+        <div style={{height:'100vh'}}>
             <Navbar />
-            {children}
+                {children}
             <Footer />
         </div>
     );

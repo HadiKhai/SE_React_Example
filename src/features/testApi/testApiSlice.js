@@ -1,17 +1,16 @@
-import { createSlice} from '@reduxjs/toolkit'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-export const testApiSlice = createSlice({
-    name: 'testApi',
-    initialState: {
-        data: []
-    },
-    reducers: {
-        setUsers: (state,action) => {
-            state.data = action.payload
-        }
-    }
-})
+// Define a service using a base URL and expected endpoints
+export const testApi = createApi({
+        reducerPath: 'testApi',
+        baseQuery: fetchBaseQuery({ baseUrl: 'https://jsonplaceholder.typicode.com/' }),
+        endpoints: (builder) => ({
+            getUsers: builder.query({
+            query: (name) => `users`,
+        }),
+    }),
+    })
 
-export const { setUsers } = testApiSlice.actions
-
-export default testApiSlice.reducer
+// Export hooks for usage in functional components, which are
+// auto-generated based on the defined endpoints
+export const { useGetUsersQuery } = testApi

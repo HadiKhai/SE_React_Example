@@ -15,15 +15,14 @@ const Footer = () => {
     return (
         <Grid container style={{background:'grey',height:'200px'}}>
             <Grid item xs>
-                <Typography textAlign={"center"} variant={"h1"} color={"white"}>
-                    {count}
+                <Typography textAlign={"center"} variant={"h5"} color={"white"}>
+                    Count From Redux: {count}
                 </Typography>
-                <Typography textAlign={"center"} variant={"h1"} color={"white"}>
-                    {countPlusTwo}
+            </Grid>
+            <Grid item xs>
+                <Typography textAlign={"center"} variant={"h5"} color={"white"}>
+                    Count From Component State: {countPlusTwo}
                 </Typography>
-                <Button variant={"contained"}>
-                    Footer Button
-                </Button>
             </Grid>
         </Grid>
     );

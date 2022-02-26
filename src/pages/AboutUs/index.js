@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import Logo from "../../assets/logo.png";
-import {Button} from "@mui/material";
+import {Button, CircularProgress, Grid, Typography} from "@mui/material";
 import {decrement} from "../../features/counter/counterSlice";
-import {setUsers as setUsersAction} from "../../features/testApi/testApiSlice";
+import { useGetUsersQuery} from "../../features/testApi/testApiSlice";
 
 const AboutUs = () => {
 
@@ -11,33 +11,65 @@ const AboutUs = () => {
 
     const [users,setUsers] = useState([]);
 
-    useEffect(() => {
-        getAllUsers()
-    },[])
+    // Uncomment if you want the component to fetch at the initial render
+    // useEffect(() => {
+    //     getAllUsers()
+    // },[])
 
+    // Fetching data inside the component
     const getAllUsers = () => fetch("https://jsonplaceholder.typicode.com/users")
         .then((response) => response.json())
         .then((result) => {
             setUsers(result)
-            dispatch(setUsersAction(result))
         })
 
+    // Done inside redux
+    const { data, error, isLoading } = useGetUsersQuery()
+
+    if(isLoading){
+        return <CircularProgress />
+    }
+
+    console.log(data)
     return (
-        <div style={{height: '500px', background: 'white'}}>
+        <Grid style={{height: '500px', background: 'white'}}>
             <Button variant={"contained"} onClick={() => dispatch(decrement())}>
                 Decrement
             </Button>
             <Button onClick={() => getAllUsers() }>
                 Fetch Users
             </Button>
-            {
-                users.map((e) => {
-                    if(e?.email){
-                       return (<div>{e.email}</div>)
-                    }
-                })
-            }
-        </div>
+            <Grid container>
+                <Grid item xs={6}>
+                    <Typography variant={"h4"} marginY={5}>
+                        Fetched from redux
+                    </Typography>
+                    <div>
+                        {
+                            data.map((e) => {
+                                if(e?.email){
+                                    return (<div>{e.email}</div>)
+                                }
+                            })
+                        }
+                    </div>
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant={"h4"} marginY={5}>
+                        Fetched from the button
+                    </Typography>
+                    <div>
+                        {
+                            users.map((e) => {
+                                if(e?.email){
+                                    return (<div>{e.email}</div>)
+                                }
+                            })
+                        }
+                    </div>
+                </Grid>
+            </Grid>
+        </Grid>
     );
 };
 
